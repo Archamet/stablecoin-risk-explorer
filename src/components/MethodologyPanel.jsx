@@ -120,6 +120,13 @@ export function MethodologyPanel({ fetchedAt, duneQueryId }) {
           </div>
 
           <div>
+            <p style={styles.sectionTitle}>Coverage Note</p>
+            <p style={styles.privacyNote}>
+              Volume charts show the five classified archetypes only. The majority of USDC transfers are to unclassified addresses and are excluded from visualisations. This reflects the nature of public blockchain data — most activity cannot be attributed to a known institutional counterparty type.
+            </p>
+          </div>
+
+          <div>
             <p style={styles.sectionTitle}>Data Sources</p>
             <ul style={styles.list}>
               {DUNE_QUERIES.map(({ label, id }) => (
