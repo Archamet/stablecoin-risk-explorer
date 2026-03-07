@@ -96,7 +96,7 @@ const styles = {
   },
 }
 
-export function MethodologyPanel({ fetchedAt }) {
+export function MethodologyPanel({ fetchedAt, duneQueryId }) {
   const [open, setOpen] = useState(false)
 
   return (
@@ -138,6 +138,9 @@ export function MethodologyPanel({ fetchedAt }) {
             </ul>
             {fetchedAt && (
               <p style={styles.timestamp}>Last fetched: {new Date(fetchedAt).toUTCString()}</p>
+            )}
+            {duneQueryId && (
+              <p style={styles.timestamp}>Active query ID: {duneQueryId}</p>
             )}
           </div>
 

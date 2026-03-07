@@ -124,6 +124,11 @@ function App() {
           <>
             <section style={styles.section}>
               <h2 style={styles.sectionTitle}>Overview</h2>
+              <p style={styles.blurb}>
+                <strong>KYC Design Question:</strong> Which counterparty types represent the greatest
+                concentration of USDC activity, and how should this inform your
+                customer risk segmentation framework?
+              </p>
               <KpiCards data={filteredData} />
             </section>
 
