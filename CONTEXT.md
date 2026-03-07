@@ -130,6 +130,11 @@ Response:
 - Use `recharts` not Chart.js (better React integration)
 - Vite for local dev speed; deploy target is Vercel
 - No database — MVP uses only Dune API + serverless cache
+- Dune query IDs:
+  - archetype_volume_timeseries: 6796353
+  - archetype_transfer_size_distribution: 6796354
+  - archetype_supply_snapshot: 6796356
+  - stress_event_overlay: 6796357
 
 ---
 
