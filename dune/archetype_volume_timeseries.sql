@@ -25,7 +25,7 @@ usdc_transfers AS (
     FROM tokens.transfers
     WHERE blockchain    = 'ethereum'
       AND contract_address = 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48  -- USDC on Ethereum mainnet
-      AND block_time   >= TIMESTAMP '2023-01-01'                        -- configurable lookback
+      AND block_time   >= TIMESTAMP '2024-01-01'                        -- configurable lookback
 ),
 
 -- 2. Hardcoded archetype labels for known major addresses.
@@ -91,10 +91,12 @@ labeled_transfers AS (
 --    volume_usd: sum of transfer amounts in USD
 --    tx_count:   number of individual transfer events
 SELECT
-    day                    AS date,
+    day                                 AS date,
     archetype,
-    SUM(amount_usd)        AS volume_usd,
-    COUNT(*)               AS tx_count
+    SUM(amount_usd)                     AS volume_usd,
+    COUNT(*)                            AS tx_count,
+    approx_percentile(amount_usd, 0.5)  AS median_size,
+    approx_percentile(amount_usd, 0.9)  AS pct90_size
 FROM labeled_transfers
 GROUP BY 1, 2
 ORDER BY 1 DESC, 2
