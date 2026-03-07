@@ -69,8 +69,7 @@ function App() {
       <NavBar />
       <main style={styles.main}>
         <p style={styles.blurb}>
-          Aggregate KYC design intelligence derived from public USDC onchain data.
-          Not transaction monitoring.
+          Public onchain data, analysed by counterparty type to inform KYC programme design.
         </p>
 
         <section style={styles.section}>
