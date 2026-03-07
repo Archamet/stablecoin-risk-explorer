@@ -97,7 +97,7 @@ export default async function handler(req, res) {
   try {
     const executeResponse = await dunePost(
       `/query/${QUERY_ID}/execute`,
-      { query_parameters: { start, end, token } },
+      {},
       apiKey,
     );
     console.log('[dune] execute response:', JSON.stringify(executeResponse));
