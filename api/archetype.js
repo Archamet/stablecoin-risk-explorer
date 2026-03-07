@@ -73,12 +73,18 @@ export default async function handler(req, res) {
   if (!start || !end) {
     return res
       .status(400)
-      .json({ error: 'start and end query params are required (YYYY-MM-DD)' });
+      .json({ error: 'start and end query params are required (YYYY-MM-DD)', code: 'MISSING_PARAMS' });
+  }
+
+  if (end < start) {
+    return res
+      .status(400)
+      .json({ error: 'end date must not be before start date', code: 'INVALID_DATE_RANGE' });
   }
 
   const apiKey = process.env.DUNE_API_KEY;
   if (!apiKey) {
-    return res.status(502).json({ error: 'Dune API key not configured' });
+    return res.status(502).json({ error: 'Dune API key not configured', code: 'DUNE_KEY_MISSING' });
   }
 
   const key = cacheKey(start, end, token);
@@ -107,6 +113,6 @@ export default async function handler(req, res) {
     cache.set(key, { payload, expires_at: Date.now() + CACHE_TTL_MS });
     return res.status(200).json(payload);
   } catch (_err) {
-    return res.status(502).json({ error: 'Dune API error' });
+    return res.status(502).json({ error: 'Dune API error', code: 'DUNE_ERROR' });
   }
 }
