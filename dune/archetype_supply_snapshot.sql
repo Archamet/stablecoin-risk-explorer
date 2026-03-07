@@ -1,6 +1,6 @@
 -- archetype_supply_snapshot.sql
 -- Current USDC balance held by each archetype as a share of total
--- circulating supply, derived entirely from ethereum.token_transfers.
+-- circulating supply, derived entirely from tokens.transfers (Dune V2 spell).
 --
 -- Approach:
 --   Balance is computed as the net of all inflows (transfers received)
@@ -11,7 +11,7 @@
 --   which equals the sum of inflows minus burns.
 --
 -- Tables used:
---   ethereum.token_transfers  – one row per ERC-20 transfer event
+--   tokens.transfers          – one row per ERC-20 transfer event (Dune V2 spell)
 --   labels.addresses          – Dune community labels keyed on (blockchain, address)
 --
 -- Archetype mapping (same priority order as other queries in this project):
@@ -35,20 +35,22 @@ address_balances AS (
     FROM (
         -- Inflows: address received USDC
         SELECT
-            "to"          AS address,
-            value / 1e6   AS net_amount_usd   -- positive contribution
-        FROM ethereum.token_transfers
-        WHERE contract_address = 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48  -- USDC on Ethereum mainnet
-          AND "to" != 0x0000000000000000000000000000000000000000             -- exclude mint/burn address
+            "to"        AS address,
+            amount_usd  AS net_amount_usd   -- positive contribution
+        FROM tokens.transfers
+        WHERE blockchain    = 'ethereum'
+          AND contract_address = 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48  -- USDC on Ethereum mainnet
+          AND "to" != 0x0000000000000000000000000000000000000000            -- exclude mint/burn address
 
         UNION ALL
 
         -- Outflows: address sent USDC
         SELECT
-            "from"          AS address,
-            -(value / 1e6)  AS net_amount_usd  -- negative contribution
-        FROM ethereum.token_transfers
-        WHERE contract_address = 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48
+            "from"        AS address,
+            -amount_usd   AS net_amount_usd  -- negative contribution
+        FROM tokens.transfers
+        WHERE blockchain    = 'ethereum'
+          AND contract_address = 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48
           AND "from" != 0x0000000000000000000000000000000000000000
     ) flows
     GROUP BY address

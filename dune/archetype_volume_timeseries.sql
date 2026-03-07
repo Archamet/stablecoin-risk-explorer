@@ -25,7 +25,7 @@ usdc_transfers AS (
         amount_usd
     FROM tokens.transfers
     WHERE blockchain    = 'ethereum'
-      AND token_address = 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48  -- USDC on Ethereum mainnet
+      AND contract_address = 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48  -- USDC on Ethereum mainnet
       AND block_time   >= TIMESTAMP '2023-01-01'                        -- configurable lookback
 ),
 

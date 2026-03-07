@@ -3,7 +3,7 @@
 -- per archetype per day.
 --
 -- Tables used:
---   ethereum.token_transfers  – one row per ERC-20 transfer event
+--   tokens.transfers          – one row per ERC-20 transfer event (Dune V2 spell)
 --   labels.addresses          – Dune community labels keyed on (blockchain, address)
 --
 -- Archetype mapping (same priority order as archetype_volume_timeseries.sql):
@@ -19,16 +19,17 @@
 
 WITH
 
--- 1. Filter token_transfers to USDC on Ethereum only.
---    value is in raw units (6 decimals); divide by 1e6 to get USD.
+-- 1. Filter tokens.transfers to USDC on Ethereum only.
+--    tokens.transfers is the Dune V2 spell; amount_usd is pre-computed by the spell.
 usdc_transfers AS (
     SELECT
         date_trunc('day', block_time)          AS day,
         "to"                                   AS recipient,
-        value / 1e6                            AS amount_usd   -- USDC has 6 decimals; 1 USDC ≈ $1
-    FROM ethereum.token_transfers
-    WHERE contract_address = 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48  -- USDC on Ethereum mainnet
-      AND block_time >= TIMESTAMP '2023-01-01'                             -- configurable lookback
+        amount_usd
+    FROM tokens.transfers
+    WHERE blockchain    = 'ethereum'
+      AND contract_address = 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48  -- USDC on Ethereum mainnet
+      AND block_time   >= TIMESTAMP '2023-01-01'                        -- configurable lookback
 ),
 
 -- 2. Resolve each recipient address to a single archetype label.

@@ -18,7 +18,7 @@
 --      query_parameters: { "event_date": "YYYY-MM-DD" }
 --
 -- Tables used:
---   ethereum.token_transfers  – one row per ERC-20 transfer event
+--   tokens.transfers          – one row per ERC-20 transfer event (Dune V2 spell)
 --   labels.addresses          – Dune community labels keyed on (blockchain, address)
 --
 -- Net flow definition (per address per day):
@@ -60,10 +60,11 @@ windowed_transfers AS (
         date_trunc('day', t.block_time)  AS day,
         t."to"                           AS recipient,
         t."from"                         AS sender,
-        t.value / 1e6                    AS amount_usd   -- USDC has 6 decimals; 1 USDC ≈ $1
-    FROM ethereum.token_transfers t
+        t.amount_usd
+    FROM tokens.transfers t
     CROSS JOIN window_bounds w
-    WHERE t.contract_address = 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48  -- USDC on Ethereum mainnet
+    WHERE t.blockchain    = 'ethereum'
+      AND t.contract_address = 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48  -- USDC on Ethereum mainnet
       AND t.block_time >= CAST(w.window_start AS TIMESTAMP)
       AND t.block_time <  CAST(w.window_end   AS TIMESTAMP) + INTERVAL '1' DAY
       AND t."to"   != 0x0000000000000000000000000000000000000000
@@ -140,7 +141,7 @@ SELECT
     SUM(CASE WHEN f.flow_usd > 0 THEN  f.flow_usd ELSE 0 END) AS inflow_usd,
     SUM(CASE WHEN f.flow_usd < 0 THEN -f.flow_usd ELSE 0 END) AS outflow_usd,
     SUM(f.flow_usd)                                            AS net_flow_usd,
-    DATEDIFF(f.day, w.event_date)                              AS days_from_event
+    date_diff('day', CAST(w.event_date AS TIMESTAMP), f.day)   AS days_from_event
 FROM labeled_flows f
 CROSS JOIN window_bounds w
 GROUP BY f.day, f.archetype, w.event_date
