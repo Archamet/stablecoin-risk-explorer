@@ -42,6 +42,7 @@ async function waitForResult(executionId, apiKey, maxWaitMs = 55000) {
   const deadline = Date.now() + maxWaitMs;
   while (Date.now() < deadline) {
     const status = await duneGet(`/execution/${executionId}/status`, apiKey);
+    console.log('[dune] poll state:', status.state);
     if (status.state === 'QUERY_STATE_COMPLETED') {
       return duneGet(`/execution/${executionId}/results`, apiKey);
     }
@@ -94,11 +95,13 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { execution_id } = await dunePost(
+    const executeResponse = await dunePost(
       `/query/${QUERY_ID}/execute`,
       { query_parameters: { start, end, token } },
       apiKey,
     );
+    console.log('[dune] execute response:', JSON.stringify(executeResponse));
+    const { execution_id } = executeResponse;
 
     const result = await waitForResult(execution_id, apiKey);
     const rows = result?.result?.rows ?? [];
@@ -112,7 +115,8 @@ export default async function handler(req, res) {
 
     cache.set(key, { payload, expires_at: Date.now() + CACHE_TTL_MS });
     return res.status(200).json(payload);
-  } catch (_err) {
+  } catch (err) {
+    console.error('[dune] error:', err.message);
     return res.status(502).json({ error: 'Dune API error', code: 'DUNE_ERROR' });
   }
 }
