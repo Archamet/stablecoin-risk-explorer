@@ -16,7 +16,7 @@ const ARCHETYPE_COLOURS = {
   bridges_wrapped: '#50e3c2',
 }
 
-const ARCHETYPES = Object.keys(ARCHETYPE_COLOURS)
+const ARCHETYPES = ['exchanges', 'payment_processors', 'defi_protocols', 'custody_treasury', 'bridges_wrapped']
 
 const styles = {
   wrapper: {
