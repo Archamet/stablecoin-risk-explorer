@@ -84,7 +84,7 @@ export default async function handler(req, res) {
 
   const apiKey = process.env.DUNE_API_KEY;
   if (!apiKey) {
-    return res.status(502).json({ error: 'Dune API key not configured', code: 'DUNE_KEY_MISSING' });
+    return res.status(500).json({ error: 'Internal configuration error', code: 'CONFIG_ERROR' });
   }
 
   const key = cacheKey(start, end, token);
