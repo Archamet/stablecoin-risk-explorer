@@ -21,7 +21,18 @@ export function useArchetypeData({ start, end, token }) {
         return res.json()
       })
       .then((json) => {
-        setData(json.data ?? [])
+        const LABEL_MAP = {
+          'Exchange': 'exchanges',
+          'Custody/Treasury': 'custody_treasury',
+          'Payment Processor': 'payment_processors',
+          'DeFi Protocol': 'defi_protocols',
+          'Bridge/Wrapped': 'bridges_wrapped',
+        }
+        const normalised = (json.data ?? []).map((row) => ({
+          ...row,
+          archetype: LABEL_MAP[row.archetype] ?? row.archetype,
+        }))
+        setData(normalised)
         setFetchedAt(json.fetched_at ?? null)
         setDuneQueryId(json.dune_query_id ?? null)
       })
