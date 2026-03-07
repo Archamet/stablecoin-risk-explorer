@@ -39,7 +39,7 @@ known_labels AS (
         ('0xdfd5293d8e347dfe59e90efd55b2956a1343963d', 'Exchange'),  -- Binance 15
         ('0x56eddb7aa87536c09ccc2793473599fd21a8b17f', 'Exchange'),  -- Binance 16
         ('0xbe0eb53f46cd790cd13851d5eff43d12404d33e8', 'Exchange'),  -- Binance cold 2
-        ('0x5041ed759dd4afc3a72b8192c143f72f4724081',  'Exchange'),  -- OKX hot wallet
+        ('0x5041ed759dd4afc3a72b8192c143f72f47240816', 'Exchange'),  -- OKX hot wallet
         ('0x6cc5f688a315f3dc28a7781717a9a798a59fda7b', 'Exchange'),  -- OKX 2
         ('0xeb2629a2734e272bcc07bda959863f316f4bd4cf', 'Exchange'),  -- Coinbase hot wallet
         ('0xa9d1e08c7793af67e9d92fe308d5697fb81d3e43', 'Exchange'),  -- Coinbase 10
@@ -84,7 +84,7 @@ labeled_transfers AS (
         t.amount_usd
     FROM usdc_transfers t
     LEFT JOIN known_labels l
-        ON lower(cast(t.recipient AS varchar)) = l.address
+        ON t.recipient = from_hex(substr(l.address, 3))
 )
 
 -- 4. Aggregate to daily archetype-level totals.
