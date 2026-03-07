@@ -43,6 +43,7 @@ function formatUSD(value) {
 function pivotData(data) {
   const byDate = {}
   for (const row of data) {
+    if (row.archetype === 'unknown') continue
     if (!byDate[row.date]) byDate[row.date] = { date: row.date }
     byDate[row.date][row.archetype] = row.volume_usd
   }
