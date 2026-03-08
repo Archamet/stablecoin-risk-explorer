@@ -62,6 +62,10 @@ export function VolumeChart({ data = [] }) {
             tick={{ fontSize: 11, fill: '#888' }}
             tickLine={false}
             axisLine={{ stroke: '#e0e0e0' }}
+            tickFormatter={(d) => {
+              const date = new Date(d)
+              return date.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })
+            }}
           />
           <YAxis
             tickFormatter={(v) => '$' + (v >= 1_000_000 ? (v / 1_000_000).toFixed(0) + 'M' : v.toLocaleString())}
