@@ -9,59 +9,92 @@ import { useArchetypeData } from './hooks/useArchetypeData'
 
 const styles = {
   page: {
-    fontFamily: "'Segoe UI', system-ui, sans-serif",
+    fontFamily: "'Inter', system-ui, sans-serif",
     color: '#1a1a1a',
-    background: '#f8f9fa',
+    background: '#F1F5F9',
     minHeight: '100vh',
     margin: 0,
   },
   navbar: {
     background: '#fff',
-    borderBottom: '1px solid #e0e0e0',
-    padding: '0 24px',
+    borderBottom: '1px solid #CBD5E1',
+    padding: '0 32px',
     display: 'flex',
     alignItems: 'center',
-    height: '56px',
+    height: '64px',
   },
   navTitle: {
-    fontSize: '16px',
+    fontSize: '12px',
     fontWeight: '600',
+    textTransform: 'uppercase',
+    letterSpacing: '0.08em',
     margin: 0,
-    color: '#1a1a1a',
+    color: '#94A3B8',
   },
   main: {
-    maxWidth: '960px',
+    maxWidth: '1000px',
     margin: '0 auto',
-    padding: '32px 24px',
+    padding: '40px 32px',
   },
   blurb: {
-    fontSize: '14px',
-    color: '#555',
-    margin: '0 0 40px 0',
-    lineHeight: '1.5',
-    borderLeft: '3px solid #0070f3',
-    paddingLeft: '12px',
+    fontSize: '13px',
+    color: '#94A3B8',
+    margin: '0 0 32px 0',
+    lineHeight: '1.6',
+    letterSpacing: '0.01em',
   },
   section: {
     background: '#fff',
-    border: '1px solid #e0e0e0',
-    borderRadius: '6px',
+    border: '1px solid #CBD5E1',
+    borderRadius: '16px',
     padding: '24px',
-    marginBottom: '24px',
+    marginBottom: '20px',
+    boxShadow: '0 2px 6px rgba(0,0,0,0.04)',
   },
   sectionTitle: {
-    fontSize: '14px',
+    fontSize: '11px',
     fontWeight: '600',
     textTransform: 'uppercase',
-    letterSpacing: '0.05em',
-    color: '#888',
-    margin: '0 0 12px 0',
+    letterSpacing: '0.08em',
+    color: '#94A3B8',
+    margin: '0 0 16px 0',
+    paddingBottom: '12px',
+    borderBottom: '1px solid #E2E8F0',
   },
-  placeholder: {
-    fontSize: '14px',
-    color: '#aaa',
-    margin: 0,
+  kycNote: {
+    fontSize: '13px',
+    color: '#64748B',
+    margin: '0 0 20px 0',
+    lineHeight: '1.6',
   },
+  kycLabel: {
+    fontWeight: '600',
+    color: '#475569',
+  },
+  loadingText: {
+    fontSize: '13px',
+    color: '#94A3B8',
+    textAlign: 'center',
+    padding: '48px 0',
+    letterSpacing: '0.02em',
+  },
+  errorBox: {
+    fontSize: '13px',
+    color: '#DC2626',
+    padding: '12px 16px',
+    background: '#FFF5F5',
+    border: '1px solid #CBD5E1',
+    borderRadius: '12px',
+    marginBottom: '20px',
+  },
+}
+
+// Inject Inter font
+if (typeof document !== 'undefined') {
+  const link = document.createElement('link')
+  link.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap'
+  link.rel = 'stylesheet'
+  document.head.appendChild(link)
 }
 
 function NavBar() {
@@ -94,6 +127,7 @@ function App() {
         </p>
 
         <section style={styles.section}>
+          <h2 style={styles.sectionTitle}>Filters</h2>
           <div style={{ marginBottom: '16px' }}>
             <ArchetypeSelector
               selectedArchetypes={selectedArchetypes}
@@ -109,13 +143,11 @@ function App() {
         </section>
 
         {loading && (
-          <p style={{ fontSize: '14px', color: '#888', textAlign: 'center', padding: '32px 0' }}>
-            Loading…
-          </p>
+          <p style={styles.loadingText}>Loading data…</p>
         )}
 
         {error && (
-          <p style={{ fontSize: '14px', color: '#cc0000', padding: '12px 16px', background: '#fff5f5', border: '1px solid #fcc', borderRadius: '6px' }}>
+          <p style={styles.errorBox}>
             Failed to load data: {error}
           </p>
         )}
@@ -124,10 +156,10 @@ function App() {
           <>
             <section style={styles.section}>
               <h2 style={styles.sectionTitle}>Overview</h2>
-              <p style={styles.blurb}>
-                <strong>KYC Design Question:</strong> Which counterparty types represent the greatest
-                concentration of USDC activity, and how should this inform your
-                customer risk segmentation framework?
+              <p style={styles.kycNote}>
+                <span style={styles.kycLabel}>KYC design question: </span>
+                Which counterparty types represent the greatest concentration of USDC activity,
+                and how should this inform your customer risk segmentation framework?
               </p>
               <KpiCards data={filteredData} />
             </section>
