@@ -83,8 +83,8 @@ export function SizeDistributionChart({ data = [] }) {
             }}
           />
           <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '12px', color: '#64748B' }} />
-          <Bar dataKey="pct90_size" name="90th percentile" fill="#6366F1" radius={[4, 4, 0, 0]} />
-          <Bar dataKey="median_size" name="Median size" fill="#A5B4FC" radius={[4, 4, 0, 0]} />
+          <Bar dataKey="pct90_size" name="90th percentile" fill="#f5a623" radius={[4, 4, 0, 0]} />
+          <Bar dataKey="median_size" name="Median size" fill="#0070f3" radius={[4, 4, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
       <p style={styles.kycNote}>

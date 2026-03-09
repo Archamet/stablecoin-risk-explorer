@@ -9,11 +9,11 @@ import {
 } from 'recharts'
 
 const ARCHETYPE_COLOURS = {
-  exchanges:          '#3730A3',
-  custody_treasury:   '#6366F1',
-  payment_processors: '#A5B4FC',
-  defi_protocols:     '#94A3B8',
-  bridges_wrapped:    '#CBD5E1',
+  exchanges:          '#0070f3',
+  custody_treasury:   '#7928ca',
+  payment_processors: '#ff4d4d',
+  defi_protocols:     '#f5a623',
+  bridges_wrapped:    '#50e3c2',
 }
 
 const ARCHETYPES = ['exchanges', 'payment_processors', 'defi_protocols', 'custody_treasury', 'bridges_wrapped']
