@@ -123,7 +123,7 @@ function App() {
       <NavBar />
       <main style={styles.main}>
         <p style={styles.blurb}>
-          Public onchain data, analysed by counterparty type to inform KYC programme design.
+          Public onchain data from the Dune API, analysed by counterparty type to inform KYC programme design.
         </p>
 
         <section style={styles.section}>

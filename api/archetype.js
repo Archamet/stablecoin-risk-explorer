@@ -28,14 +28,26 @@ async function dunePost(path, body, apiKey) {
   return res.json();
 }
 
-async function duneGet(path, apiKey) {
-  const res = await fetch(`${DUNE_BASE}${path}`, {
-    headers: { 'X-Dune-API-Key': apiKey },
-  });
-  if (!res.ok) {
-    throw new Error(`Dune GET ${path} responded ${res.status}`);
+async function duneGet(path, apiKey, retries = 3) {
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    const res = await fetch(`${DUNE_BASE}${path}`, {
+      headers: { 'X-Dune-API-Key': apiKey },
+    });
+
+    if (res.status === 429) {
+      const waitMs = attempt * 5000; // 5s, 10s, 15s
+      console.log(`[dune] 429 rate limit on attempt ${attempt}, waiting ${waitMs}ms`);
+      await new Promise((r) => setTimeout(r, waitMs));
+      continue;
+    }
+
+    if (!res.ok) {
+      throw new Error(`Dune GET ${path} responded ${res.status}`);
+    }
+
+    return res.json();
   }
-  return res.json();
+  throw new Error(`Dune GET ${path} failed after ${retries} retries due to rate limiting`);
 }
 
 async function waitForResult(executionId, apiKey, maxWaitMs = 90000) {
