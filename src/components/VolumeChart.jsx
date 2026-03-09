@@ -9,11 +9,11 @@ import {
 } from 'recharts'
 
 const ARCHETYPE_COLOURS = {
-  exchanges: '#0070f3',
-  custody_treasury: '#7928ca',
-  payment_processors: '#ff4d4d',
-  defi_protocols: '#f5a623',
-  bridges_wrapped: '#50e3c2',
+  exchanges:          '#3730A3',
+  custody_treasury:   '#6366F1',
+  payment_processors: '#A5B4FC',
+  defi_protocols:     '#94A3B8',
+  bridges_wrapped:    '#CBD5E1',
 }
 
 const ARCHETYPES = ['exchanges', 'payment_processors', 'defi_protocols', 'custody_treasury', 'bridges_wrapped']
@@ -23,21 +23,17 @@ const styles = {
     width: '100%',
   },
   kycNote: {
-    marginTop: '12px',
+    marginTop: '16px',
     fontSize: '13px',
-    color: '#555',
-    fontStyle: 'italic',
+    color: '#64748B',
     lineHeight: '1.5',
+    paddingTop: '12px',
+    borderTop: '1px solid #E2E8F0',
   },
   kycLabel: {
     fontWeight: '600',
-    fontStyle: 'normal',
-    color: '#333',
+    color: '#475569',
   },
-}
-
-function formatUSD(value) {
-  return '$' + value.toLocaleString()
 }
 
 function pivotData(data) {
@@ -59,9 +55,9 @@ export function VolumeChart({ data = [] }) {
         <AreaChart data={chartData} margin={{ top: 8, right: 16, left: 16, bottom: 0 }}>
           <XAxis
             dataKey="date"
-            tick={{ fontSize: 11, fill: '#888' }}
+            tick={{ fontSize: 11, fill: '#94A3B8' }}
             tickLine={false}
-            axisLine={{ stroke: '#e0e0e0' }}
+            axisLine={{ stroke: '#E2E8F0' }}
             tickFormatter={(d) => {
               const date = new Date(d)
               return date.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })
@@ -69,13 +65,22 @@ export function VolumeChart({ data = [] }) {
           />
           <YAxis
             tickFormatter={(v) => '$' + (v >= 1_000_000 ? (v / 1_000_000).toFixed(0) + 'M' : v.toLocaleString())}
-            tick={{ fontSize: 11, fill: '#888' }}
+            tick={{ fontSize: 11, fill: '#94A3B8' }}
             tickLine={false}
             axisLine={false}
             width={70}
           />
-          <Tooltip formatter={(value) => formatUSD(value)} />
-          <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '8px' }} />
+          <Tooltip
+            formatter={(value) => '$' + value.toLocaleString()}
+            contentStyle={{
+              background: '#ffffff',
+              border: '1px solid #CBD5E1',
+              borderRadius: '8px',
+              fontSize: '12px',
+              color: '#1E293B',
+            }}
+          />
+          <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '12px', color: '#64748B' }} />
           {ARCHETYPES.map((archetype) => (
             <Area
               key={archetype}
@@ -84,8 +89,8 @@ export function VolumeChart({ data = [] }) {
               stackId="1"
               stroke={ARCHETYPE_COLOURS[archetype]}
               fill={ARCHETYPE_COLOURS[archetype]}
-              fillOpacity={0.6}
-              strokeWidth={1.5}
+              fillOpacity={0.7}
+              strokeWidth={1}
             />
           ))}
         </AreaChart>

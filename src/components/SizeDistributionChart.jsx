@@ -13,16 +13,16 @@ const styles = {
     width: '100%',
   },
   kycNote: {
-    marginTop: '12px',
+    marginTop: '16px',
     fontSize: '13px',
-    color: '#555',
-    fontStyle: 'italic',
+    color: '#64748B',
     lineHeight: '1.5',
+    paddingTop: '12px',
+    borderTop: '1px solid #E2E8F0',
   },
   kycLabel: {
     fontWeight: '600',
-    fontStyle: 'normal',
-    color: '#333',
+    color: '#475569',
   },
 }
 
@@ -59,23 +59,32 @@ export function SizeDistributionChart({ data = [] }) {
         <BarChart data={chartData} margin={{ top: 8, right: 16, left: 16, bottom: 0 }}>
           <XAxis
             dataKey="archetype"
-            tick={{ fontSize: 11, fill: '#888' }}
+            tick={{ fontSize: 11, fill: '#94A3B8' }}
             tickLine={false}
-            axisLine={{ stroke: '#e0e0e0' }}
+            axisLine={{ stroke: '#E2E8F0' }}
           />
           <YAxis
             tickFormatter={(v) =>
               '$' + (v >= 1_000_000 ? (v / 1_000_000).toFixed(0) + 'M' : v.toLocaleString())
             }
-            tick={{ fontSize: 11, fill: '#888' }}
+            tick={{ fontSize: 11, fill: '#94A3B8' }}
             tickLine={false}
             axisLine={false}
             width={70}
           />
-          <Tooltip formatter={(value) => formatUSD(value)} />
-          <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '8px' }} />
-          <Bar dataKey="median_size" name="Median size" fill="#0070f3" radius={[3, 3, 0, 0]} />
-          <Bar dataKey="pct90_size" name="90th percentile" fill="#f5a623" radius={[3, 3, 0, 0]} />
+          <Tooltip
+            formatter={(value) => formatUSD(value)}
+            contentStyle={{
+              background: '#ffffff',
+              border: '1px solid #CBD5E1',
+              borderRadius: '8px',
+              fontSize: '12px',
+              color: '#1E293B',
+            }}
+          />
+          <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '12px', color: '#64748B' }} />
+          <Bar dataKey="pct90_size" name="90th percentile" fill="#6366F1" radius={[4, 4, 0, 0]} />
+          <Bar dataKey="median_size" name="Median size" fill="#A5B4FC" radius={[4, 4, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
       <p style={styles.kycNote}>

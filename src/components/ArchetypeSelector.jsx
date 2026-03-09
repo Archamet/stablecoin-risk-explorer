@@ -14,14 +14,17 @@ const styles = {
   },
   btn: (selected) => ({
     padding: '6px 14px',
-    fontSize: '13px',
-    borderRadius: '4px',
+    fontSize: '12px',
+    fontWeight: '500',
+    letterSpacing: '0.02em',
+    borderRadius: '8px',
     border: '1px solid',
-    borderColor: selected ? '#0070f3' : '#d0d0d0',
-    background: selected ? '#0070f3' : '#fff',
-    color: selected ? '#fff' : '#333',
+    borderColor: selected ? '#3730A3' : '#CBD5E1',
+    background: selected ? '#3730A3' : '#ffffff',
+    color: selected ? '#ffffff' : '#64748B',
     cursor: 'pointer',
     fontFamily: 'inherit',
+    transition: 'all 0.15s ease',
   }),
 }
 
