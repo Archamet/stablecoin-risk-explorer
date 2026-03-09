@@ -38,7 +38,7 @@ async function duneGet(path, apiKey) {
   return res.json();
 }
 
-async function waitForResult(executionId, apiKey, maxWaitMs = 55000) {
+async function waitForResult(executionId, apiKey, maxWaitMs = 90000) {
   const deadline = Date.now() + maxWaitMs;
   while (Date.now() < deadline) {
     const status = await duneGet(`/execution/${executionId}/status`, apiKey);
