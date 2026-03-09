@@ -100,7 +100,7 @@ if (typeof document !== 'undefined') {
 function NavBar() {
   return (
     <nav style={styles.navbar}>
-      <h1 style={styles.navTitle}>Stablecoin Use-Case Risk Explorer</h1>
+      <h1 style={styles.navTitle}>On-Chain KYC Intelligence Dashboard</h1>
     </nav>
   )
 }
